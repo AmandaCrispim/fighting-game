@@ -9,7 +9,7 @@ c.fillRect(0, 0, canvas.width, canvas.height)
 const gravity = 0.7
 
 class Sprite {
-    constructor({position, velocity}) {
+    constructor({ position, velocity} ) {
         this.position = position
         this.velocity = velocity
         this.height = 150
@@ -116,7 +116,7 @@ window.addEventListener('keydown', (event) => {
             jogador.velocity.y = -20
             break
     
-            case 'ArrowRight':
+        case 'ArrowRight':
             keys.ArrowRight.pressed = true
             inimigo.lastKey = 'ArrowRight'
             break
@@ -140,13 +140,12 @@ window.addEventListener('keyup', (event) => {
             keys.a.pressed = false
             break
     }
-
     // movimentação do inimigo
     switch (event.key) {
-        case '':
+        case 'ArrowRight':
             keys.ArrowRight.pressed = false
             break
-        case 'a':
+        case 'ArrowLeft':
             keys.ArrowLeft.pressed = false
             break
     }
