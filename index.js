@@ -9,19 +9,23 @@ c.fillRect(0, 0, canvas.width, canvas.height)
 const gravity = 0.7
 
 class Sprite {
-    constructor({ position, velocity, color = 'red'}) {
+    constructor({ position, velocity, color = 'red', offset}) {
         this.position = position
         this.velocity = velocity
         this.width = 50
         this.height = 150
         this.lastKey
         this.attackBox = {
-            position: this.position,
+            position: {
+                x: this.position.x,
+                y: this.position.y
+            },
+            offset,
             width: 100,
             height: 50,
         }
         this.color = color
-        this.isAttacking = 
+        this.isAttacking 
     }
 
     draw() {
@@ -42,6 +46,8 @@ class Sprite {
 
     update () {
         this.draw()
+        this.attackBox.position.x = this.position.x + this.attackBox.offset.x
+        this.attackBox.position.y = this.position.y
 
         this.position.x += this.velocity.x
         this.position.y += this.velocity.y
@@ -55,12 +61,12 @@ class Sprite {
         this.isAttacking = true
         setTimeout(() => {
             this.isAttacking = false
-        }, 100);
+        }, 100)
     }
 }
 
 
-const jogador = new Sprite({
+const heroi = new Sprite({
     position: {
     x: 0,
     y: 0
@@ -68,6 +74,10 @@ const jogador = new Sprite({
     velocity: {
     x: 0,
     y: 0
+     },
+    offset: {
+        x: 0,
+        y: 0
      }
 })
 
@@ -81,11 +91,15 @@ const inimigo = new Sprite ({
     x: 0,
     y:0
     },
-    color: 'blue'
+    color: 'blue',
+    offset: {
+        x: -50,
+        y: 0
+     }
 })
 
 
-console.log(jogador)
+console.log(heroi)
 
 const keys = {
     a: {
@@ -102,21 +116,31 @@ const keys = {
     }
 }
 
+function rectangularCollision({ rectangle1, rectangle2 } ) {
+    return (
+        rectangle1.attackBox.position.x + rectangle1.attackBox.width >=  rectangle2.position.x && 
+        rectangle1.attackBox.position.x <=  rectangle2.position.x +  rectangle2.width &&
+        rectangle1.attackBox.position.y + rectangle1.attackBox.height >=  rectangle2.position.y &&
+        rectangle1.attackBox.position.y <=  rectangle2.position.y +  rectangle2.height &&
+        rectangle1.isAttacking
+    )
+}
+
 function animacao() {
     window.requestAnimationFrame(animacao)
     c.fillStyle = 'black'
     c.fillRect(0, 0, canvas.width, canvas.height)
-    jogador.update()
+    heroi.update()
     inimigo.update()
 
-    jogador.velocity.x = 0
+    heroi.velocity.x = 0
     inimigo.velocity.x = 0
 
-    // movimnto do jogador
-    if (keys.a.pressed && jogador.lastKey === 'a') {
-        jogador.velocity.x = -5
-    } else if (keys.d.pressed && jogador.lastKey === 'd') {
-        jogador.velocity.x = 5
+    // movimnto do heroi
+    if (keys.a.pressed && heroi.lastKey === 'a') {
+        heroi.velocity.x = -5
+    } else if (keys.d.pressed && heroi.lastKey === 'd') {
+        heroi.velocity.x = 5
     }
 
     // movimnto do inimigo
@@ -126,35 +150,46 @@ function animacao() {
         inimigo.velocity.x = 5
     }
 
-    if (jogador.attackBox.position.x + jogador.attackBox.width >= inimigo.position.x && 
-        jogador.attackBox.position.x <= inimigo.position.x + inimigo.width &&
-        jogador.attackBox.position.y + jogador.attackBox.height >= inimigo.position.y &&
-        jogador.attackBox.position.y <= inimigo.position.y + inimigo.height &&
-        jogador.isAttacking
+
+    //detectar a colisão
+    if ( rectangularCollision({
+        rectangle1: heroi,
+        rectangle2: inimigo
+    }) &&
+        heroi.isAttacking
         ) { 
-        jogador.isAttacking = false
-        console.log('ai');
+        heroi.isAttacking = false
+        console.log('heroi está atacando');
+    }
+
+    if ( rectangularCollision({
+        rectangle1: inimigo,
+        rectangle2: heroi
+    }) &&
+        inimigo.isAttacking
+        ) { 
+        inimigo.isAttacking = false
+        console.log('inimigo está atacando');
     }
 }
 
 animacao()
 
 window.addEventListener('keydown', (event) => {
-    console.log(event.key)
     switch (event.key) {
         case 'd':
             keys.d.pressed = true
-            jogador.lastKey = 'd'
+            heroi.lastKey = 'd'
             break
         case 'a':
             keys.a.pressed = true
-            jogador.lastKey = 'a'
+            heroi.lastKey = 'a'
             break
         case 'w':
-            jogador.velocity.y = -20
+            heroi.velocity.y = -20
             break
         case ' ':
-            jogador.attack()
+            heroi.attack()
             break
     
         case 'ArrowRight':
@@ -168,8 +203,10 @@ window.addEventListener('keydown', (event) => {
         case 'ArrowUp':
             inimigo.velocity.y = -20
             break
+        case 'ArrowDown':
+            inimigo.isAttacking = true
+            break
     }
-    console.log(event.key);
 })
 
 window.addEventListener('keyup', (event) => {
@@ -190,6 +227,5 @@ window.addEventListener('keyup', (event) => {
             keys.ArrowLeft.pressed = false
             break
     }
-    console.log(event.key);
 })
 
