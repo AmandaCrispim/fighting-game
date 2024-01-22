@@ -26,6 +26,7 @@ class Sprite {
         }
         this.color = color
         this.isAttacking 
+        this.healht = 100
     }
 
     draw() {
@@ -159,7 +160,8 @@ function animacao() {
         heroi.isAttacking
         ) { 
         heroi.isAttacking = false
-        console.log('heroi está atacando');
+        inimigo.healht -= 20
+        document.querySelector('#barraInimigo').style.width = inimigo.healht + '%'
     }
 
     if ( rectangularCollision({
