@@ -11,7 +11,10 @@
         <!-- container filho -->
         <div style="position: absolute;  display:flex; width: 100%; align-items: center; padding: 20px;">
             <!-- barra de vida do heroi-->
-            <div style=" background-color: yellow; height: 30px;  width: 100%;" ></div>
+            <div style="position: relative; height: 30px; width: 100%; display: flex; justify-content: flex-end;">
+                <div style="background-color: yellow; height: 30px; width: 100%;"></div>
+                <div id="barraHeroi" style="position: absolute; background-color: blue; top: 0; bottom: 0; right: 0; width: 100%;"></div>
+            </div>
             <!-- tempo de jogo-->
             <div style="background-color: red; width: 100px; height: 100px; flex-shrink: 0;"></div>
             <!-- barra de vida do inimigo-->

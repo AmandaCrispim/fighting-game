@@ -171,7 +171,8 @@ function animacao() {
         inimigo.isAttacking
         ) { 
         inimigo.isAttacking = false
-        console.log('inimigo está atacando');
+        heroi.healht -= 20
+        document.querySelector('#barraHeroi').style.width = heroi.healht + '%'
     }
 }
 
