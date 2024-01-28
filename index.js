@@ -127,6 +127,13 @@ function rectangularCollision({ rectangle1, rectangle2 } ) {
     )
 }
 
+
+let tempo = 10
+function decreaseTimer() {
+    setTimeout(decrease)
+    if(tempo > 0 ) tempo--
+}
+
 function animacao() {
     window.requestAnimationFrame(animacao)
     c.fillStyle = 'black'
