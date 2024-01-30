@@ -130,9 +130,19 @@ function rectangularCollision({ rectangle1, rectangle2 } ) {
 
 let tempo = 10
 function decreaseTimer() {
-    setTimeout(decrease)
-    if(tempo > 0 ) tempo--
+    if(tempo > 0 ) {
+        setTimeout(decreaseTimer, 1000)
+        tempo--
+        document.querySelector('#tempo').innerHTML = tempo
+    }
+
+    if (heroi.healht === inimigo.healht) {
+        document.querySelector('#displayFlex').innerHTML = 'Tie'
+        document.querySelector('#displayFlex').style.display = 'flex'
+    }
 }
+
+decreaseTimer()
 
 function animacao() {
     window.requestAnimationFrame(animacao)
