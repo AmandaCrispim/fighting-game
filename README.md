@@ -1,3 +1,3 @@
 # fighting-game
 
-O projeto é um jogo de luta, que utilizamos como caso de estudo sobre o comportamento do elemento canvas e como podemos usufruir dele para desenhar e compor gráficos na tela.
+Fighting-game é um estudo de caso sobre o comportamento e como funciona o HTML Canvas aliado ao JavaScript, ensinado pelo desenvolvedor Christopher Lis, em seu canal no Youtube Chris Courses, onde ensina lógica de programação com JavaSvript através do desenvolvimento de jogos para a web. 
