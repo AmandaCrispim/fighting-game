@@ -127,18 +127,29 @@ function rectangularCollision({ rectangle1, rectangle2 } ) {
     )
 }
 
+function determineWinner({heroi, inimigo, tempoID}) {
+    clearTimeout(tempoID)
+    document.querySelector('#displayText').style.display = 'flex'
+    if (heroi.healht === inimigo.healht) {
+        document.querySelector('#displayText').innerHTML = 'Tie'
+    } else if (heroi.healht > inimigo.healht) {
+        document.querySelector('#displayText').innerHTML = 'Jogador 1 ganhou'
+    } else if (inimigo.healht > heroi.healht) {
+        document.querySelector('#displayText').innerHTML = 'Jogador 2 ganhou'
+    }
+}
 
-let tempo = 10
+let tempo = 60
+let tempoID
 function decreaseTimer() {
     if(tempo > 0 ) {
-        setTimeout(decreaseTimer, 1000)
+        tempoID = setTimeout(decreaseTimer, 1000)
         tempo--
         document.querySelector('#tempo').innerHTML = tempo
     }
 
-    if (heroi.healht === inimigo.healht) {
-        document.querySelector('#displayFlex').innerHTML = 'Tie'
-        document.querySelector('#displayFlex').style.display = 'flex'
+    if (tempo === 0) {
+        determineWinner({heroi, inimigo, tempoID})
     }
 }
 
@@ -190,6 +201,10 @@ function animacao() {
         inimigo.isAttacking = false
         heroi.healht -= 20
         document.querySelector('#barraHeroi').style.width = heroi.healht + '%'
+    }
+    //fim do jogo baseado na vida dos jogadores
+    if (inimigo.healht <= 0 || heroi.healht <= 0) {
+        determineWinner({heroi, inimigo, tempoID})
     }
 }
 
